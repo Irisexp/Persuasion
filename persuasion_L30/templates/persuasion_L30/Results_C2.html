@@ -1,0 +1,313 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block title %}
+    Results
+{% endblock %}
+
+{% block content %}
+
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/modules/export-data.js"></script>
+
+
+<br>
+<div class = "left_column">
+    <br><br>
+<div style="width: 50%; float:left" class = "left_box">
+
+    <div id="plan 1" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+</div>
+    {%if player.id_in_group == 1 %}
+
+<div style="width: 50%; float:left" class = "right_box">
+
+    <div id="plan 2" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+</div>
+
+    {% elif group.decision == 1 %}
+
+<div style="width: 50%; float:left" class = "right_box">
+
+    <div id="plan 2" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+</div>
+
+    {%else %}
+
+    {%endif%}
+
+</div>
+
+<div style="width: 100%; height:100px;  vertical-align: middle;" class = "break_box">
+</div>
+
+<div class = "right_column">
+    {% if player.id_in_group == 1%}
+You are Sender. <br>
+    <table class = "payoff_table" cellpadding="10">
+        <tr>
+            <th>Ball Color</th>
+            <th>Message Sent</th>
+            <th>Receiver's Observation</th>
+            <th>Receiver's Guess</th>
+            <th>Your Payoff</th>
+            <th>Receiver's Payoff</th>
+        </tr>
+     <tr>
+         <th>{% if group.true_state == 1%}<font color="red">Red</font> {% else %} <font color="blue">Blue</font> {% endif %}</th>
+         <th>{% if group.message == 1 %} <font color="red">Red</font> {% else %} <font color="blue">Blue</font> {% endif %}</th>
+         <th>{% if group.decision == 1 %}"Observe({{Constants.observation_cost}})"{% else %}"Not observe($0)"{% endif %}</th>
+         <th>{% if group.guess == 1 %} <font color="red">Red</font> {% else %} <font color="blue">Blue</font> {% endif %}</th>
+         <th>{{player.round_payoff}}</th>
+         <th>{{player.other_payoff}}</th>
+        </tr>
+    </table>
+
+      <br>
+        <b>Hidden Communication Plan</b> is selected to send the message. The receiver can only observe Hidden Communication Plan in this Results Page if she/he chose "Observe" in Stage 2.<br><br>
+
+    <!--If the receiver chose "if message is <font color="red">Red</font>, guess <font color="red">Red</font>", the receiver gets {{Constants.sender_payoffs.1}} with probability {{posterior_ry}}% and {{Constants.sender_payoffs.0}} with probability {{posterior_by}}%.<br>-->
+    <!--If the receiver chose "if message is <font color="red">Red</font>, guess <font color="blue">Blue</font>", the receiver gets {{Constants.sender_payoffs.1}} with probability {{posterior_by}}% and {{Constants.sender_payoffs.0}} with probability {{posterior_ry}}%.<br>-->
+    <!--<br>-->
+
+    The receiver chose the following Guess Plan: <br>
+If the message is <font color="red">Red</font>, guess {% if group.red_guess == 1 %} <font color="red">Red</font> {% else %} <font color="blue">Blue</font>{% endif %} .<br>
+If the message is <font color="blue">Blue</font>, guess <font color="blue">Blue</font>. <br>
+
+    {% else %}
+You are Receiver. <br>
+        <table class = "payoff_table" cellpadding="10">
+        <tr>
+            <th>Ball Color</th>
+            <th>Message Sent</th>
+            <th>Your Observation</th>
+            <th>Your Guess</th>
+            <th>Your Payoff</th>
+            <th>Sender's Payoff</th>
+        </tr>
+     <tr>
+         <th>{% if group.true_state == 1%}<font color="red">Red</font> {% else %} <font color="blue">Blue</font> {% endif %}</th>
+         <th>{% if group.message == 1 %} <font color="red">Red</font> {% else %} <font color="blue">Blue</font> {% endif %}</th>
+         <th>{% if group.decision == 1 %}"Observe({{Constants.observation_cost}})"{% else %}"Not observe($0)"{% endif %}</th>
+         <th>{% if group.guess == 1 %} <font color="red">Red</font> {% else %} <font color="blue">Blue</font> {% endif %}</th>
+         <th>{{player.round_payoff}}</th>
+         <th>{{player.other_payoff}}</th>
+        </tr>
+    </table>
+    <br>
+
+        <b>Hidden Communication Plan</b> is selected to send the message.<br><br>
+
+    <!--If you chose "if message is <font color="red">Red</font>, guess <font color="red">Red</font>", you get {{Constants.sender_payoffs.1}} with probability {{posterior_ry}}% and {{Constants.sender_payoffs.0}} with probability {{posterior_by}}%.<br>-->
+    <!--If you chose "if message is <font color="red">Red</font>, guess <font color="blue">Blue</font>", you get {{Constants.sender_payoffs.1}} with probability {{posterior_by}}% and {{Constants.sender_payoffs.0}} with probability {{posterior_ry}}%.<br>-->
+    <!--<br>-->
+
+You chose the following Guess Plan: <br>
+If the message is <font color="red">Red</font>, guess {% if group.red_guess == 1 %} <font color="red">Red</font> {% else %} <font color="blue">Blue</font>{% endif %} .<br>
+If the message is <font color="blue">Blue</font>, guess <font color="blue">Blue</font>. <br>
+
+{% endif %}
+<br><br>
+
+    {% next_button %}
+
+<div style="width: 100%; height:1px;  vertical-align: middle;" class = "break_box"> </div>
+
+{% endblock %}
+{% block styles %}
+<style>
+
+hr.buyer_line {
+    color = green;
+    background-color: green;
+}
+
+hr.life_line {
+    color = black;
+    background-color: black;
+}
+
+div.buyer_title {
+    font-size: 30px;
+}
+
+div.life_title {
+    font-size: 20px;
+}
+
+.column {
+    float: left;
+    width: 33%;
+    padding: 10px;
+}
+
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+div.history_box {
+    margin-right:-300px;
+    margin-left:-300px;
+}
+
+.otree-btn-next {
+    position: relative;
+    left: 100%;
+
+ }
+
+div.break_box {
+    vertical-align: middle;
+     clear: both;
+}
+
+
+</style>
+
+{% endblock %}
+
+{% block scripts %}
+
+<script>
+
+
+Highcharts.chart('plan 1', {
+    colors: ['red','blue','yellow','pink','green'],
+    exporting: { enabled: false },
+    chart: {
+        type: 'column'
+    },
+    title: {
+        text: 'COMMON COMMUNICATION PLAN'
+    },
+    xAxis: {
+        categories: ['If ball is RED', 'If ball is BLUE']
+    },
+    yAxis: {
+        min: 0,
+        max: 100,
+        title: {
+            text: 'Probabilities'
+        },
+        stackLabels: {
+            enabled: true,
+            style: {
+                fontWeight: 'bold',
+                color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+            }
+        }
+    },
+    legend: {
+        align: 'center',
+        x: -30,
+        verticalAlign: 'bottom',
+        y: 15,
+        floating: false,
+        backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
+        borderColor: '#CCC',
+        borderWidth: 1,
+        shadow: false
+    },
+    tooltip: {
+        headerFormat: '<b>{point.x}</b><br/>',
+        pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
+    },
+    plotOptions: {
+        column: {
+            stacking: 'normal',
+            dataLabels: {
+                enabled: true,
+                color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white'
+            },
+            events: {
+                legendItemClick: function () {
+                    return false;
+                }
+            },
+        }
+    },
+    credits: {
+      enabled: false
+    },
+    series: [{
+        name: 'Send Red Message',
+        data: [100, {{ display_xm }}],opacity:0.3
+    }, {
+        name: 'Send Blue Message',
+        data: [0, {{ display_x }}],opacity:0.3
+    }, ]
+});
+
+
+Highcharts.chart('plan 2', {
+    colors: ['red','blue','yellow','pink','green'],
+    exporting: { enabled: false },
+    chart: {
+        type: 'column'
+    },
+    title: {
+        text: 'HIDDEN COMMUNICATION PLAN'
+    },
+    xAxis: {
+        categories: ['If ball is RED', 'If ball is BLUE']
+    },
+    yAxis: {
+        min: 0,
+        max: 100,
+        title: {
+            text: 'Probabilities'
+        },
+        stackLabels: {
+            enabled: true,
+            style: {
+                fontWeight: 'bold',
+                color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+            }
+        }
+    },
+    legend: {
+        align: 'center',
+        x: -30,
+        verticalAlign: 'bottom',
+        y: 15,
+        floating: false,
+        backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
+        borderColor: '#CCC',
+        borderWidth: 1,
+        shadow: false
+    },
+    tooltip: {
+        headerFormat: '<b>{point.x}</b><br/>',
+        pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
+    },
+    plotOptions: {
+        column: {
+            stacking: 'normal',
+            dataLabels: {
+                enabled: true,
+                color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white'
+            },
+            events: {
+                legendItemClick: function () {
+                    return false;
+                }
+            },
+        }
+    },
+    credits: {
+      enabled: false
+    },
+    series: [{
+        name: 'Send Red Message',
+        data: [100, {{ display_ym }}]
+    }, {
+        name: 'Send Blue Message',
+        data: [0, {{ display_y }}]
+    }, ]
+});
+</script>
+
+{% endblock %}
