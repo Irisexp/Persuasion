@@ -1,0 +1,57 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block content %}
+
+<div class = "title">
+Your role is <b>Sender</b> in the next {{Constants.num_rounds}} rounds.
+</div>
+
+<div class = "left_column">
+
+    <br>
+
+    <div class = "subtitle">Instructions Summary:</div> <br>
+
+<div class = "text">
+One ball is drawn at random from an urn with three balls. Two balls are <font color="blue">Blue</font> and one is <font color="red">Red</font>.
+</div>
+
+<div class = "text1">
+    <br> You will get {{Constants.sender_payoffs.1}} if the receiver guesses <font color="red">Red</font> and {{Constants.sender_payoffs.0}} if the receiver guesses <font color="blue">Blue</font>. <br>
+
+    The receiver gets {{Constants.receiver_payoffs.1}} if the receiver correctly guesses the color of the ball and {{Constants.receiver_payoffs.0}} otherwise.
+
+    <br><br>
+
+<b>The observation cost for the receiver is {{Constants.observation_cost}} in the next {{Constants.num_rounds}} rounds.</b>
+    <br>
+    In the next page you will choose Common Communication Plan and Hidden Communication Plan. <br></div>
+<div style="width: 100%; height:100px;  vertical-align: middle;" class = "break_box">
+<br>
+</div>
+
+{% next_button %}
+
+    </div>
+
+<div style="width: 100%; height:100px;  vertical-align: middle;" class = "break_box"></div>
+
+{% endblock %}
+
+
+{% block styles %}
+
+
+<style>
+th {
+  text-align: middle;
+}
+
+table {
+  border-spacing: 5px;
+}
+
+</style>
+
+{% endblock %}

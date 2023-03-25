@@ -1,0 +1,222 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block title %}
+Receiver Observation Decision
+{% endblock %}
+
+{% block content %}
+
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/modules/export-data.js"></script>
+
+
+<br>
+<div class = "left_column">
+        <br>
+A ball is drawn from a urn with 1 <span style="color: #ff0000">Red</span> ball and 2 <span style="color: #0000ff">Blue</span> balls.
+    <br> <br>
+
+<div style="width: 50%; float:left" class = "left_box">
+With probability <b>{{Constants.rho}}%</b>, a message will be drawn based on Common Communication Plan shown. <br><br>
+    <div id="plan 1" style="min-width: 280px; height: 400px; margin: 0 auto"></div>
+</div>
+<div style="width: 50%; float:left" class = "right_box">
+With probability <b>{{Constants.minusrho}}%</b>, a message will be drawn based on Hidden Communication Plan Not shown. <br><br>
+    <div id="plan 2" style="min-width: 280px; height: 400px; margin: 0 auto"></div>
+
+<div style="width: 100%; height:1px;  vertical-align: middle;" class = "break_box">
+</div>
+
+<div class = "text">
+    <br>
+    <br>
+Do you wish to pay {{Constants.observation_cost}} to observe Hidden Communication Plan and
+    find out the exact Communication Plan used to send the message?<br><br>
+</div>
+{% formfield group.decision %}
+
+<div style="width: 100%; height:1px;  vertical-align: middle;" class = "break_box"> </div>
+
+<div>
+
+    {% next_button %}
+</div>
+</div>
+
+</div>
+    <br><br><br>
+
+<div style="width: 100%; height:1px;  vertical-align: middle;" class = "break_box">
+
+{% endblock %}
+{% block styles %}
+<style>
+
+hr.buyer_line {
+    color = green;
+    background-color: green;
+}
+
+hr.life_line {
+    color = black;
+    background-color: black;
+}
+
+div.buyer_title {
+    font-size: 30px;
+}
+
+div.life_title {
+    font-size: 20px;
+}
+
+.column {
+    float: left;
+    width: 33%;
+    padding: 10px;
+}
+
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+div.history_box {
+    margin-right:-300px;
+    margin-left:-300px;
+}
+
+.otree-btn-next {
+    position: relative;
+    left: 100%;
+
+ }
+
+
+
+</style>
+
+{% endblock %}
+
+{% block scripts %}
+
+<script>
+
+
+Highcharts.chart('plan 1', {
+    colors: ['red','blue','yellow','pink','green'],
+    exporting: { enabled: false },
+    chart: {
+        type: 'column'
+    },
+    title: {
+        text: 'COMMON COMMUNICATION PLAN'
+    },
+    xAxis: {
+        categories: ['If ball is RED', 'If ball is BLUE']
+    },
+    yAxis: {
+        min: 0,
+        max: 100,
+        title: {
+            text: 'Probabilities'
+        },
+        stackLabels: {
+            enabled: true,
+            style: {
+                fontWeight: 'bold',
+                color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+            }
+        }
+    },
+    legend: {
+        align: 'center',
+        x: -30,
+        verticalAlign: 'bottom',
+        y: 15,
+        floating: false,
+        backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
+        borderColor: '#CCC',
+        borderWidth: 1,
+        shadow: false
+    },
+    tooltip: {
+        headerFormat: '<b>{point.x}</b><br/>',
+        pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
+    },
+    plotOptions: {
+        column: {
+            stacking: 'normal',
+            dataLabels: {
+                enabled: true,
+                color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white'
+            },
+            events: {
+                legendItemClick: function () {
+                    return false;
+                }
+            },
+        }
+    },
+    credits: {
+      enabled: false
+    },
+    series: [{
+        name: 'Send Red Message',
+        data: [100, {{ display_xm }}]
+    }, {
+        name: 'Send Blue Message',
+        data: [0, {{ display_x }}]
+    }, ]
+});
+
+
+Highcharts.chart('plan 2', {
+    colors: ['red','blue','yellow','pink','green'],
+    exporting: { enabled: false },
+    chart: {
+        type: 'column'
+    },
+    title: {
+        text: 'HIDDEN COMMUNICATION PLAN (Not Shown)'
+    },
+    xAxis: {
+    },
+    yAxis: {
+    },
+    legend: {
+        align: 'center',
+        x: -30,
+        verticalAlign: 'bottom',
+        y: 15,
+        floating: false,
+        backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
+        borderColor: '#CCC',
+        borderWidth: 1,
+        shadow: false
+    },
+    plotOptions: {
+        column: {
+            stacking: 'normal',
+            dataLabels: {
+                enabled: true,
+                color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white'
+            },
+            events: {
+                legendItemClick: function () {
+                    return false;
+                }
+            },
+        }
+    },
+    credits: {
+      enabled: false
+    },
+});
+
+</script>
+
+{% endblock %}
