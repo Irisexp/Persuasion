@@ -1,0 +1,406 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block content %}
+
+<div class = "title">
+    Sender Decision
+</div>
+
+<div class = "left_column">
+
+    <br>
+
+    <div class = "subtitle">Instructions Summary:</div> <br>
+
+<div class = "text">
+One ball is drawn at random from an urn with three balls. Two balls are <font color="blue">Blue</font> and one is <font color="red">Red</font>.
+</div>
+
+
+<div class = "text1">
+    <br> Your payoff only depends on the receiver's guess regardless of the true color of the ball.
+<table class = "payoff_table" cellpadding="10">
+        <tr>
+            <th>Receiver's guess</th>
+            <th><font color="red">Red</font></th>
+            <th><font color="blue">Blue</font></th>
+        </tr>
+        <tr>
+            <th>Your Payoff</th>
+            <td>{{Constants.sender_payoffs.1}}</td>
+            <td>{{Constants.sender_payoffs.0}}</td>
+        </tr>
+    </table>
+</div>
+</div>
+
+<div class = "right_column">
+    <br>
+        <div class = "subtitle">Communication Plan 1:</div> <br>
+        In this stage you will choose Communication Plan 1 by moving the right slider (the left slider is fixed). Receiver <font color="red"> can observe </font> this Plan with no cost. <br>
+With probability {{Constants.rho}}, a message will be drawn based on Communication Plan 1.<br>
+
+    <br><br>
+
+<div style="width: 50%; float:left" class = "left_box">
+    If the ball is <span style="color: #ff0000">RED</span> (<span id = "redT">{{ prior }}</span>% chance): <br>
+    <table class = "left_table" cellpadding="20">
+        <tr>
+            <th>Send Message</th>
+            <th>with probability:</th>
+        </tr>
+        <tr>
+            <th>Red</th>
+            <td>100%</td>
+        </tr>
+        <tr>
+            <th>Blue</th>
+            <td>0%</td>
+        </tr>
+    </table>
+    <input type="range" min="0" max="100" value="100" class="sliderL" id="sliderL">
+</div>
+
+<div style="width: 50%; float:right" class = "right_box">
+    If the ball is <span style="color: #0000ff">BLUE</span> (<span id = "blueT">{{onemp}}</span>% chance): <br>
+    <table class = "right_table" cellpadding="20">
+        <tr>
+            <th>Send Message</th>
+            <th>with probability:</th>
+        </tr>
+        <tr>
+            <th>Red</th>
+            <td><span id="redR">{{ initial_x }}</span>%</td>
+        </tr>
+        <tr>
+            <th>Blue</th>
+            <td><span id="blueR">{{ minus_x}}</span>%</td>
+        </tr>
+    </table>
+    <input type="range" min="0" max="100" value="{{ initial_x }}" class="sliderR" id="sliderR">
+</div>
+
+<br><br>
+<br><br>
+
+<br><br><br><br><br><br>
+
+<input type="hidden" name="x" value="50" id="set_x"/>
+
+
+
+
+
+<div style="width: 100%; height:100px;  vertical-align: middle;" class = "break_box">
+<br>
+    <!--Sends to 0% likelihood of Red <span id="p0"></span>% of the time, otherwise sends to <span id="bh"></span>% likelihood of Red <span id="p1"></span>% of the time.
+<table class = "bottom_table" cellpadding="20">
+        <tr>
+            <th>This Communication Plan sends Message:</th>
+            <th>with probability:</th>
+            <th>Receiver's belief that the message reveals the true state:</th>
+
+        </tr>
+        <tr>
+            <th>Red</th>
+            <td><span id="p1"></span>%</td>
+            <td><span id="bh"></span>%</td>
+        </tr>
+        <tr>
+            <th>Blue</th>
+            <td><span id="p0"></span>%</td>
+            <td><span id="bl">0</span>%</td>
+        </tr>
+    </table>
+
+    <br>
+
+    <div class = "calc_box">
+<font size="1"><b>Calculator</b></font><br>
+        <font size="1">Enter conditional probability below:</font><br> <input class ="calc" type="number" name="calc" id="calc" min="0" max="100" step="1" value="{{ prior }}"> <br>
+        <button type="button" onclick="setSignal(); return false;" name="signal_button"><font size="2">Reset</font></button>
+        </div>-->
+</div>
+
+{% next_button %}
+
+    </div>
+
+<div style="width: 100%; height:100px;  vertical-align: middle;" class = "break_box"></div>
+
+{% endblock %}
+
+{% block scripts %}
+
+<script>
+    document.getElementById("sliderL").disabled = true;
+
+    function prob_h(p, x) {
+        return p + (1-p)*(1-x);
+    }
+
+    function update(p, x) {
+        var denom = p + (1-p)*(1-x);
+        return p/denom;
+    }
+
+    var slider = document.getElementById("sliderR");
+
+  //  var inp = document.getElementById("calc");
+
+   // p0.innerHTML = Math.round((1-prob_h({{Constants.initial_prior}}, (100-slider.value)/100))*100);
+   // p1.innerHTML = Math.round(prob_h({{Constants.initial_prior }}, (100-slider.value)/100)*100);
+   // bh.innerHTML = Math.round(update({{Constants.initial_prior }}, (100-slider.value)/100)*100);
+  //  bl.innerHTML = 100;
+console.log('here!')
+
+    <!--var output = document.getElementById("outputR");-->
+    <!--output.innerHTML = slider.value; // Display the default slider value-->
+
+    document.getElementById("set_x").value = (100-slider.value)/100;
+
+    slider.oninput = function() {
+        redR.innerHTML = slider.value;
+        blueR.innerHTML = 100 - slider.value;
+        document.getElementById("set_x").value = (100-this.value)/100;
+       // p0.innerHTML = Math.round((1-prob_h(document.getElementById("calc").value/100, (100-this.value)/100))*100);
+       // p1.innerHTML = Math.round(prob_h(document.getElementById("calc").value/100, (100-this.value)/100)*100);
+       // bh.innerHTML = Math.round(update(document.getElementById("calc").value/100, (100-this.value)/100)*100);
+      //  bl.innerHTML = 100;
+    }
+
+   function setSignal() {
+        document.getElementById("calc").value = {{ prior }};
+      //  p0.innerHTML = Math.round((1-prob_h( document.getElementById("calc").value/100, (100-slider.value)/100 )) *100);
+      //  p1.innerHTML = Math.round(prob_h(document.getElementById("calc").value/100, (100-slider.value)/100)*100);
+      //  bh.innerHTML = Math.round(update(document.getElementById("calc").value/100, (100-slider.value)/100)*100);
+      //  bl.innerHTML = 100;
+
+        redT.innerHTML = {{ prior }};
+        blueT.innerHTML = {{ onemp }};
+    }
+
+    inp.oninput = function() {
+        if (this.value>100) {
+            this.value = 100;
+        }
+
+      //  p0.innerHTML = Math.round((1-prob_h( this.value/100, (100-slider.value)/100 )) *100);
+      //  p1.innerHTML = Math.round(prob_h(this.value/100, (100-slider.value)/100)*100);
+      //  bh.innerHTML = Math.round(update(this.value/100, (100-slider.value)/100)*100);
+      //  bl.innerHTML = 100;
+
+        redT.innerHTML = this.value;
+        blueT.innerHTML = 100-this.value;
+    }
+
+    inp.onkeydown = function(e) {
+
+    if(!((e.keyCode > 95 && e.keyCode < 106)
+      || (e.keyCode > 47 && e.keyCode < 58)
+      || e.keyCode == 8)) {
+        return false;
+    }
+
+}
+    function calc() {
+    //    p0.innerHTML = Math.round((1-prob_h(this.value/100, (100-slider.value)/100))*100);
+     //   p1.innerHTML = Math.round(prob_h(this.value/100, (100-slider.value)/100)*100);
+     //   bh.innerHTML = Math.round(update(this.value/100, (100-slider.value)/100)*100);
+     //   bl.innerHTML = 100;
+    }
+
+
+
+
+</script>
+
+{% endblock %}
+
+{% block styles %}
+
+
+
+<style>
+
+p.signal_text {
+    font-size: 22px;
+}
+
+input[type=number]{
+    width: 40px;
+}
+
+div.calc_box {
+    text-align: center;
+    width:100px;
+    margin-left:-18px;
+    border: 1px solid grey;
+    border-radius: 10px;
+    margin-top:-150px;
+}
+
+div.left_column {
+        float: left;
+    width: 700px;
+    margin-left:-300px;
+    border: 2px solid grey;
+    border-radius: 12px;
+    padding: 20px;
+}
+
+div.right_column {
+        float: right;
+    width: 80%;
+    height: 650px;
+    margin-right:-300px;
+        border: 2px solid grey;
+    border-radius: 12px;
+    padding: 20px;
+}
+
+
+
+div.title {
+    text-align: center;
+    font-size: 30px;
+    margin-bottom:10px;
+    margin-top:-75px;
+}
+
+div.subtitle {
+    text-align: center;
+    font-size: 20px;
+    margin-top:-40px;
+}
+
+div.text {
+    text-align: justify;
+}
+
+div.text1 {
+    text-align: justify;
+}
+
+div.text2 {
+    text-align: justify;
+}
+
+div.left_box {
+    text-align: center;
+}
+
+div.right_box {
+    text-align: center;
+}
+
+
+table.left_table {
+    text-align: center;
+    margin-left:auto;
+    margin-right:auto;
+        <!--border-collapse:separate;-->
+    <!--border-spacing:0 10px;-->
+}
+
+table.right_table {
+    text-align: center;
+    margin-left:auto;
+    margin-right:auto;
+        <!--border-collapse:separate;-->
+    <!--border-spacing:0 10px;-->
+}
+
+table.bottom_table {
+    text-align: center;
+    margin-left:auto;
+    margin-right:auto;
+        <!--border-collapse:separate;-->
+    <!--border-spacing:0 10px;-->
+}
+
+.sliderR {
+    width: 80%; /* Full-width */
+    height: 25px; /* Specified height */
+    background: #d3d3d3; /* Grey background */
+    outline: none; /* Remove outline */
+    opacity: 1.0; /* Set transparency (for mouse-over effects on hover) */
+    -webkit-transition: .2s; /* 0.2 seconds transition on hover */
+    transition: opacity .2s;
+}
+
+.sliderL {
+    width: 80%; /* Full-width */
+    height: 25px; /* Specified height */
+    background: #d3d3d3; /* Grey background */
+    outline: none; /* Remove outline */
+    opacity: 1.0; /* Set transparency (for mouse-over effects on hover) */
+    -webkit-transition: .2s; /* 0.2 seconds transition on hover */
+    transition: opacity .2s;
+}
+
+.otree-btn-next {
+    position: relative;
+    left: 90%;
+    bottom: 100px;
+
+ }
+
+ div.break_box {
+    vertical-align: middle;
+     clear: both;
+
+}
+
+
+<!--/*Chrome*/-->
+<!--@media screen and (-webkit-min-device-pixel-ratio:0) {-->
+    <!--input[type='range'] {-->
+      <!--overflow: hidden;-->
+      <!--width: 80px;-->
+      <!-- -webkit-appearance: none;-->
+      <!--background-color: #ff0000;-->
+    <!--}-->
+
+    <!--input[type='range']::-webkit-slider-runnable-track {-->
+      <!--height: 10px;-->
+      <!-- -webkit-appearance: none;-->
+      <!--color: #0000ff;-->
+      <!--margin-top: -1px;-->
+    <!--}-->
+
+    <!--input[type='range']::-webkit-slider-thumb {-->
+      <!--width: 10px;-->
+      <!-- -webkit-appearance: none;-->
+      <!--height: 10px;-->
+      <!--cursor: ew-resize;-->
+      <!--background: #434343;-->
+      <!--box-shadow: -80px 0 0 80px #43e5f7;-->
+    <!--}-->
+
+<!--}-->
+/** FF*/
+
+
+input[type="range"]::-moz-range-progress {
+  background-color: #ff0000;
+}
+input[type="range"]::-moz-range-track {
+  background-color: #0000ff;
+}
+
+/* IE*/
+input[type="range"]::-ms-fill-lower {
+  background-color: #ff0000;
+}
+input[type="range"]::-ms-fill-upper {
+  background-color: #0000ff;
+}
+
+div.signal_box {
+     clear: both;
+}
+</style>
+
+{% endblock %}

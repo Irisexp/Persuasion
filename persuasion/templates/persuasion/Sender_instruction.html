@@ -1,0 +1,87 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block content %}
+
+<div class = "title">
+    Sender Decision
+</div>
+
+<div class = "left_column">
+
+    <br>
+
+    <div class = "subtitle">Instructions Summary:</div> <br>
+
+<div class = "text">
+    Your role in this game is Sender.<br>
+One ball is drawn at random from an urn with three balls. Two balls are <font color="blue">Blue</font> and one is <font color="red">Red</font>.
+</div>
+
+<div class = "text1">
+    <br> Your payoff only depends on the receiver's guess regardless of the true color of the ball.
+<table class = "payoff_table" cellpadding="10">
+        <tr>
+            <th>Receiver's guess</th>
+            <th><font color="red">Red</font></th>
+            <th><font color="blue">Blue</font></th>
+
+        </tr>
+        <tr>
+            <th>Your Payoff</th>
+            <td>{{Constants.sender_payoffs.1}}</td>
+            <td>{{Constants.sender_payoffs.0}}</td>
+        </tr>
+    </table>
+</div>
+
+    <br><br>
+    In the next two pages you will choose Communication Plan 1 and Communication Plan 2 respectively. <br>
+
+    With probability {{Constants.rho}}, a message will be sent according to Communication Plan 1. <br>
+
+    With probability {{Constants.minusrho}}, a message will be sent according to Communication Plan 2. <br>
+
+    <br><br>
+
+    The receiver can always observe Communication Plan 1.<br>
+    The receiver is informed that a message will be sent according to Comunication Plan 1 with probability {{Constants.rho}}.<br>
+    The receiver can only observe Communication Plan 2 and verify the specific communication plan the message is sent according to with a cost of {{Constants.observation_cost}}.
+    <br>
+    Receiver's payoff depends on whether he makes the right guess for the true color of the ball.
+
+    <table class = "payoff_table" cellpadding="10">
+        <tr>
+            <th>Color of Ball</th>
+            <th><font color="red">Red</font></th>
+            <th><font color="red">Red</font></th>
+            <th><font color="blue">Blue</font></th>
+            <th><font color="blue">Blue</font></th>
+        </tr>
+        <tr>
+            <th>Receiver's Guess</th>
+             <th><font color="red">Red</font></th>
+            <th><font color="blue">Blue</font></th>
+            <th><font color="red">Red</font></th>
+            <th><font color="blue">Blue</font></th>
+        </tr>
+        <tr>
+            <th>Receiver's Payoff</th>
+             <td>{{Constants.sender_payoffs.1}}</td>
+            <td>{{Constants.sender_payoffs.0}}</td>
+            <td>{{Constants.sender_payoffs.0}}</td>
+            <td>{{Constants.sender_payoffs.1}}</td>
+        </tr>
+    </table>
+
+<div style="width: 100%; height:100px;  vertical-align: middle;" class = "break_box">
+<br>
+</div>
+
+{% next_button %}
+
+    </div>
+
+<div style="width: 100%; height:100px;  vertical-align: middle;" class = "break_box"></div>
+
+{% endblock %}

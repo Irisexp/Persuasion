@@ -1,0 +1,80 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block content %}
+
+<div class = "title">
+    Receiver Decision
+</div>
+
+<div class = "left_column">
+
+    <br>
+
+    <div class = "subtitle">Instructions Summary:</div> <br>
+
+<div class = "text">
+    Your role in this game is Receiver.<br>
+One ball is drawn at random from an urn with three balls. Two balls are <font color="blue">Blue</font> and one is <font color="red">Red</font>.<br>
+
+    Your payoff depends on whether you can guess the color of the ball right. <br><br>
+
+    <table class = "payoff_table" cellpadding="10">
+        <tr>
+            <th>Color of Ball</th>
+            <th><font color="red">Red</font></th>
+            <th><font color="red">Red</font></th>
+            <th><font color="blue">Blue</font></th>
+            <th><font color="blue">Blue</font></th>
+        </tr>
+        <tr>
+            <th>Receiver's Guess</th>
+             <th><font color="red">Red</font></th>
+            <th><font color="blue">Blue</font></th>
+            <th><font color="red">Red</font></th>
+            <th><font color="blue">Blue</font></th>
+        </tr>
+        <tr>
+            <th>Receiver's Payoff</th>
+             <td>{{Constants.receiver_payoffs.1}}</td>
+            <td>{{Constants.receiver_payoffs.0}}</td>
+            <td>{{Constants.receiver_payoffs.0}}</td>
+            <td>{{Constants.receiver_payoffs.1}}</td>
+        </tr>
+    </table>
+
+
+    <br><br>
+    Sender's payoff only depends on your guess decision.
+    <table class = "payoff_table" cellpadding="10">
+        <tr>
+            <th>Your guess</th>
+            <th><font color="red">Red</font></th>
+            <th><font color="blue">Blue</font></th>
+        </tr>
+        <tr>
+            <th>Sender Payoff</th>
+            <td>{{Constants.sender_payoffs.1}}</td>
+            <td>{{Constants.sender_payoffs.0}}</td>
+        </tr>
+    </table>
+
+    <br><br>
+    Sender will choose two communication plans, taking the form of sending message about the color of the ball with a probability. <br>
+    With probability {{Constants.rho}}, a message will be sent according to Communication Plan 1.<br>
+    With probability {{Constants.minusrho}}, a message will be sent according to Communication Plan 2. <br>
+    You can always observe Communication Plan 1. <br>
+    You can only observe Communication Plan 2 and the exact plan the message is sent according to with a cost of {{Constants.observation_cost}}.
+    <br><br>
+</div>
+
+
+<div style="width: 100%; height:100px;  vertical-align: middle;" class = "break_box">
+<br>
+</div>
+{% next_button %}
+
+</div>
+
+
+{% endblock %}
